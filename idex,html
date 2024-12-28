@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Today's Date</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Geo:ital@0;1&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Aldrich&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
+        body {
+            font-family: 'Aldrich', sans-serif;
+        }
+        #style-1-container {
+            font-family: 'Russo One', sans-serif;
+        }
+        #style-3-container {
+            font-family: 'Russo One', sans-serif;
+        }
+        .nav-arrow {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            background-color: #F1F1EF;
+        }
+        
+        .nav-arrow i {
+            font-size: 0.875rem; /* text-sm equivalent */
+        }
+        
+        .container:hover .nav-arrow {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="h-screen flex justify-center items-center bg-transparent">
+    <div class="container relative w-full h-full flex justify-center items-center">
+        <button id="left-arrow" class="nav-arrow bg-[#F1F1EF] hover:bg-gray-200 text-[#37352F] py-2 px-3 rounded-full absolute left-0 top-1/2 -translate-y-1/2 ml-4 z-10">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <div class="p-2 rounded-lg shadow-md relative bg-transparent border border-gray-300 dark:border-[#3f4347] flex flex-col items-center">
+            <div id="style-1-container" class="w-64 md:w-80 lg:w-80 xl:w-80 2xl:w-80 flex justify-center items-center space-x-6">
+                <div class="text-6xl font-medium text-[#37352F]">
+                    <h2 id="current-date" class="leading-none"></h2>
+                </div>
+                <div class="text-base font-normal text-[#37352F] tracking-wide">
+                    <h2 id="day-of-week" class="mb-1 uppercase"></h2>
+                    <h2 id="month-and-year" class="tracking-wider"></h2>
+                </div>
+            </div>
+            <div id="style-3-container" class="hidden flex justify-center items-center">
+                <div class="relative">
+                    <div class="absolute -top-2 left-10 w-4 h-4 bg-[#37352F] rounded-sm"></div>
+                    <div class="absolute -top-2 right-10 w-4 h-4 bg-[#37352F] rounded-sm"></div>
+                    <div class="w-44 h-44 flex flex-col justify-center items-center rounded-lg bg-transparent">
+                        <div class="w-full bg-[#37352F] py-1 mb-2">
+                            <h2 id="day-of-week-3" class="text-5xl font-bold text-white uppercase text-center"></h2>
+                        </div>
+                        <h2 id="current-date-3" class="text-7xl font-bold text-[#37352F]"></h2>
+                    </div>
+                </div>
+            </div>
+            <div id="style-4-container" class="hidden flex justify-center items-center">
+                <div class="w-44 flex flex-col items-center">
+                    <div class="w-16 h-[1px] bg-[#37352F] mb-6"></div>
+                    <div class="w-full flex flex-col items-center space-y-1">
+                        <h2 id="day-of-week-4" class="text-2xl font-bold text-[#37352F] uppercase tracking-widest"></h2>
+                        <h2 id="current-date-4" class="text-7xl font-bold text-[#37352F] leading-none"></h2>
+                        <div class="w-12 h-[1px] bg-[#37352F] my-2"></div>
+                        <h2 id="month-year-4" class="text-sm font-bold text-[#37352F] tracking-wider"></h2>
+                    </div>
+                    <div class="w-16 h-[1px] bg-[#37352F] mt-6"></div>
+                </div>
+            </div>
+        </div>
+        <button id="right-arrow" class="nav-arrow bg-[#F1F1EF] hover:bg-gray-200 text-[#37352F] py-2 px-3 rounded-full absolute right-0 top-1/2 -translate-y-1/2 mr-4 z-10">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+    <script>
+        let currentDate = new Date();
+        // Get saved style from localStorage or default to 1
+        let currentStyle = parseInt(localStorage.getItem('preferredDateStyle')) || 1;
+
+        // Function to update the visible style
+        function updateVisibleStyle() {
+            // Hide all containers first
+            document.getElementById('style-1-container').classList.add('hidden');
+            document.getElementById('style-3-container').classList.add('hidden');
+            document.getElementById('style-4-container').classList.add('hidden');
+            
+            // Show the current style
+            if (currentStyle === 1) {
+                document.getElementById('style-1-container').classList.remove('hidden');
+            } else if (currentStyle === 2) {
+                document.getElementById('style-3-container').classList.remove('hidden');
+            } else {
+                document.getElementById('style-4-container').classList.remove('hidden');
+            }
+        }
+
+        // Initial setup of date displays
+        document.getElementById('current-date').innerText = currentDate.getDate();
+        document.getElementById('day-of-week').innerText = currentDate.toLocaleString('default', { weekday: 'long' });
+        document.getElementById('month-and-year').innerText = currentDate.toLocaleString('default', { month: 'long', year: 'numeric' });
+
+        document.getElementById('day-of-week-3').innerText = currentDate.toLocaleString('default', { weekday: 'short' });
+        document.getElementById('current-date-3').innerText = currentDate.getDate();
+
+        document.getElementById('day-of-week-4').innerText = currentDate.toLocaleString('default', { weekday: 'short' });
+        document.getElementById('current-date-4').innerText = currentDate.getDate();
+        document.getElementById('month-year-4').innerText = currentDate.toLocaleString('default', { month: 'short', year: 'numeric' });
+
+        // Show the saved style on load
+        updateVisibleStyle();
+
+        document.getElementById('left-arrow').addEventListener('click', () => {
+            if (currentStyle === 1) {
+                currentStyle = 2;
+            } else if (currentStyle === 2) {
+                currentStyle = 3;
+            } else {
+                currentStyle = 1;
+            }
+            localStorage.setItem('preferredDateStyle', currentStyle.toString());
+            updateVisibleStyle();
+        });
+
+        document.getElementById('right-arrow').addEventListener('click', () => {
+            if (currentStyle === 1) {
+                currentStyle = 2;
+            } else if (currentStyle === 2) {
+                currentStyle = 3;
+            } else {
+                currentStyle = 1;
+            }
+            localStorage.setItem('preferredDateStyle', currentStyle.toString());
+            updateVisibleStyle();
+        });
+
+        // Update date every day at midnight
+        setInterval(() => {
+            currentDate = new Date();
+            document.getElementById('current-date').innerText = currentDate.getDate();
+            document.getElementById('day-of-week').innerText = currentDate.toLocaleString('default', { weekday: 'long' });
+            document.getElementById('month-and-year').innerText = currentDate.toLocaleString('default', { month: 'long', year: 'numeric' });
+
+            document.getElementById('day-of-week-3').innerText = currentDate.toLocaleString('default', { weekday: 'short' });
+            document.getElementById('current-date-3').innerText = currentDate.getDate();
+
+            document.getElementById('day-of-week-4').innerText = currentDate.toLocaleString('default', { weekday: 'short' });
+            document.getElementById('current-date-4').innerText = currentDate.getDate();
+            document.getElementById('month-year-4').innerText = currentDate.toLocaleString('default', { month: 'short', year: 'numeric' });
+        }, 86400000);
+    </script>
+</body>
+</html>
